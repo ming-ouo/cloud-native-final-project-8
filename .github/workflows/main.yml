@@ -2,11 +2,11 @@ name: CI/CD
 on:
   push:
     branches:
-      - main
+      - CICD_opt
   pull_request:
 
 jobs:
-  build:
+  Testing:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -15,7 +15,7 @@ jobs:
       # check-ot our repository
       - uses: actions/checkout@v2
         with:
-            fetch-depth: 0
+          fetch-depth: 0
 
       # install app dependencies
       - name: Install dependencies
@@ -27,11 +27,19 @@ jobs:
       - name: Testing
         run: npm test
 
+  BuildAndPushDockerImage:
+    needs: Testing
+    runs-on: ubuntu-latest
+    steps:
+      # check-ot our repository
+      - name: Checkout files    
+        uses: actions/checkout@v2
+
       # Install doctl
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
-            token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       # Build container image
       - name: Build container image
@@ -44,6 +52,20 @@ jobs:
       # Push image to DigitalOcean Container Registry
       - name: Push image to DigitalOcean Container Registry
         run: docker push ${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:$(echo $GITHUB_SHA | head -c7)
+
+  DeployAndVerify:
+    needs: BuildAndPushDockerImage
+    runs-on: ubuntu-latest
+    steps:
+      # check-ot our repository
+      - name: Checkout files    
+        uses: actions/checkout@v2
+      
+      # Install doctl
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       # Update deployment file
       - name: Update deployment file
