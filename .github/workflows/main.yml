@@ -2,7 +2,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - testCICD_no_failed
+      - main
   pull_request:
 
 jobs:
