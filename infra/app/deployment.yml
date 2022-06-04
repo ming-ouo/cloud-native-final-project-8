@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: apc-simulator
-          image: lusifar/apc-simulator:v2
+          image: registry.digitalocean.com/nycu-cn-team-8/apc-simulator:image-tag
           ports:
             - containerPort: 3030
           env:
