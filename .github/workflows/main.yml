@@ -47,7 +47,7 @@ jobs:
 
       # Update deployment file
       - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|${{ secrets.REGISTRY_ENDPOINT }}/<repository_name>:'${TAG}'|' $GITHUB_WORKSPACE/infra/app/deployment.yml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|{{IMAGE}}|${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:'${TAG}'|' $GITHUB_WORKSPACE/infra/app/deployment.yml
 
       # Save DigitalOcean kubeconfig with short-lived credentials
       - name: Save DigitalOcean kubeconfig with short-lived credentials
