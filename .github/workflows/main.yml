@@ -37,7 +37,7 @@ jobs:
       # check-ot our repository
       - name: Checkout files    
         uses: actions/checkout@v2
-        
+
       # Install doctl
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -55,6 +55,10 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
+      # check-ot our repository
+      - name: Checkout files    
+        uses: actions/checkout@v2
+
       # Log in to DigitalOcean
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
@@ -70,6 +74,10 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
+      # check-ot our repository
+      - name: Checkout files    
+        uses: actions/checkout@v2
+        
       # Update deployment file
       - name: Update deployment file
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|{{IMAGE}}|${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:'${TAG}'|' $GITHUB_WORKSPACE/infra/app/deployment.yml
