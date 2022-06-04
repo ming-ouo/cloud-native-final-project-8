@@ -1,5 +1,5 @@
 class Strategy {
-  constructor(params) {
+  constructor(params, factors) {
       this.params = params;
       this.factors = factors;
   }
