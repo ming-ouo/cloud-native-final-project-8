@@ -5,7 +5,6 @@ on:
       - testCICD_no_failed
   pull_request:
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,6 +44,20 @@ jobs:
       # Push image to DigitalOcean Container Registry
       - name: Push image to DigitalOcean Container Registry
         run: docker push ${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:$(echo $GITHUB_SHA | head -c7)
+
+      # Update deployment file
+      - name: Update deployment file
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|${{ secrets.REGISTRY_ENDPOINT }}/<repository_name>:'${TAG}'|' $GITHUB_WORKSPACE/infra/app/deployment.yml
+
+      # Save DigitalOcean kubeconfig with short-lived credentials
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/infra/app/deployment.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/apc-simulator
 #
 #  deploy:
 #    needs: build
