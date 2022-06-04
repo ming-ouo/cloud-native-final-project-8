@@ -2,20 +2,21 @@ class Strategy {
   constructor(params, factors) {
       this.params = params;
       this.factors = factors;
+
   };
   getInfo(){
-    
+
   }
 }
 
 class defaultStrategy extends Strategy{
 
   getInfo() {
-    const temperature = (this.params.moisture * this.factors.mFactor).toFixed(2);
+    const period = (this.params.moisture * this.factors.mFactor).toFixed(2);
 
     return {
-      period: 100,
-      temperature,
+      period: period,
+      temperature: 100,
     };
   }
 }
