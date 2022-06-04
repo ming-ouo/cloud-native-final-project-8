@@ -2,7 +2,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - CICD_opt
+      - main
   pull_request:
 
 jobs:
