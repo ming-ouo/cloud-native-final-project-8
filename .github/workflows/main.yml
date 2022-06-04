@@ -30,6 +30,9 @@ jobs:
   BuildDockerImage:
     needs: Testing
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       # Install doctl
       - name: Install doctl
@@ -44,6 +47,9 @@ jobs:
   PushdDockerImage:
     needs: BuildDockerImage
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       # Log in to DigitalOcean
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
@@ -56,6 +62,9 @@ jobs:
   DeployAndVerigy:
     needs: PushdDockerImage
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
       # Update deployment file
       - name: Update deployment file
