@@ -5,9 +5,8 @@ on:
       - testCICD_no_failed
   pull_request:
 
-
 jobs:
-  Testing:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,10 +27,6 @@ jobs:
       - name: Testing
         run: npm test
 
-  BuildDockerImage:
-    needs: Testing
-    runs-on: ubuntu-latest
-    steps:
       # Install doctl
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -40,19 +35,29 @@ jobs:
 
       # Build container image
       - name: Build container image
-        run: docker build -t registry.digitalocean.com/nycu-cn-team-8/apc-simulator:$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -t ${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:$(echo $GITHUB_SHA | head -c7) .
 
-  PushdDockerImage:
-    needs: BuildDockerImage
-    runs-on: ubuntu-latest
-    steps:
       # Log in to DigitalOcean
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
 
       # Push image to DigitalOcean Container Registry
       - name: Push image to DigitalOcean Container Registry
-        run: docker push registry.digitalocean.com/nycu-cn-team-8/apc-simulator:$(echo $GITHUB_SHA | head -c7)
+        run: docker push ${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:$(echo $GITHUB_SHA | head -c7)
+
+      # Update deployment file
+      - name: Update deployment file
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|{{IMAGE}}|${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:'${TAG}'|' $GITHUB_WORKSPACE/infra/app/deployment.yml
+
+      # Save DigitalOcean kubeconfig with short-lived credentials
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/infra/app/deployment.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/apc-simulator
 #
 #  deploy:
 #    needs: build
