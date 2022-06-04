@@ -16,15 +16,96 @@ app.use(cors());
 
 app.use('', factorRouter);
 
+
+
+class FactorManager { 
+  constructor() { 
+    this.factorType = null;
+  }
+
+  set setType(params) {
+    this.factorType = params;
+  }
+
+  getParams() { 
+    return this.factorType._factor;
+  };
+}
+
+
+class FactorType { 
+  constructor(params) { 
+    this._factor = params;
+  }
+}
+
+
+
+// API: post api's endpoint
+// FACTOR_TYPE: change the factor here to adjust the post param
+
+const factorSeries = [
+  {
+    API: "moisture",
+    FACTOR_TYPE: {
+      factor: Math.random().toFixed(2),
+    }
+  },
+  {
+    API: "thickness",
+    FACTOR_TYPE: {
+      factor: Math.random().toFixed(2),
+    }
+  }
+]
+
+
+const postFactors = () => {
+
+  factorSeries.forEach(async (element, id) => {
+    
+    let factorType = new FactorType(element.FACTOR_TYPE);
+
+    factorManager.setType = factorType;
+
+    let params = factorManager.getParams();
+
+    await axios.post(`${domainService.params.endpoint}/api/v1/factor/${element.API}`, params);
+        
+  })
+}
+
+const factorManager = new FactorManager();
+
 const run = async () => {
   return new Promise((resolve, reject) => {
     app.listen(domainService.params.port, () => {
       const handler = setInterval(async () => {
-        const tFactor = Math.random().toFixed(2);
-        const mFactor = Math.random().toFixed(2);
+        // const tFactor = Math.random().toFixed(2);
+        // const mFactor = Math.random().toFixed(2);
 
-        await axios.post(`${domainService.params.endpoint}/api/v1/factor/thickness`, { factor: tFactor });
-        await axios.post(`${domainService.params.endpoint}/api/v1/factor/moisture`, { factor: mFactor });
+        postFactors();
+
+        // let factorType = new FactorType({
+        //   factor: tFactor,
+        // });
+
+        // factorManager.setType = factorType;
+
+        // let params = factorManager.getParams();
+
+        // await axios.post(`${domainService.params.endpoint}/api/v1/factor/thickness`, params);
+        
+        
+        // factorType = new FactorType({
+        //   factor: mFactor
+        // })
+
+        // factorManager.setType = factorType;
+
+        // params = factorManager.getParams();
+
+        // await axios.post(`${domainService.params.endpoint}/api/v1/factor/moisture`, params);
       }, cron.paramsPeriod);
 
       resolve(handler);
