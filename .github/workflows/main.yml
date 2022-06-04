@@ -30,9 +30,6 @@ jobs:
   BuildAndPushDockerImage:
     needs: Testing
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
       # check-ot our repository
       - name: Checkout files    
@@ -56,12 +53,9 @@ jobs:
       - name: Push image to DigitalOcean Container Registry
         run: docker push ${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:$(echo $GITHUB_SHA | head -c7)
 
-  DeployAndVerigy:
-    needs: DockerImage
+  DeployAndVerify:
+    needs: BuildAndPushDockerImage
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
       # check-ot our repository
       - name: Checkout files    
