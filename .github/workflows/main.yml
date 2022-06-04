@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  build:
+  Testing:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,6 +28,10 @@ jobs:
       - name: Testing
         run: npm test
 
+  BuildDockerImage:
+    needs: Testing
+    runs-on: ubuntu-latest
+    steps:
       # Install doctl
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
@@ -38,6 +42,10 @@ jobs:
       - name: Build container image
         run: docker build -t registry.digitalocean.com/nycu-cn-team-8/apc-simulator:$(echo $GITHUB_SHA | head -c7) .
 
+  PushdDockerImage:
+    needs: BuildDockerImage
+    runs-on: ubuntu-latest
+    steps:
       # Log in to DigitalOcean
       - name: Log in to DigitalOcean Container Registry with short-lived credentials
         run: doctl registry login --expiry-seconds 1200
