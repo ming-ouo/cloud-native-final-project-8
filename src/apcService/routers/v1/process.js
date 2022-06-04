@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { defaultStrategy, sharonStrategy } = require('../../utilities/strategyUtil');
+const steakStrategy = require('../../utilities/strategyUtil');
 
 const logger = require('../../../utilities/logger')('APC_SERVICE');
 
@@ -25,9 +25,12 @@ router.post('/api/v1/process', async (req, res) => {
 
     let data = null;
     if (type === 'SHARON') {
-      data = sharonStrategy(thickness, tFactor);
-    } else {
-      data = defaultStrategy(moisture, mFactor);
+      data = new steakStrategy.sharonStrategy({thickness}, {tFactor});
+    } else if (type === 'STRIP') {
+      data = new steakStrategy.stripStrategy({thickness, moisture}, {tFactor, mFactor});
+    }
+    else {
+      data = new steakStrategy.defaultStrategy({moisture}, {mFactor});
     }
 
     logger.end(handle, { tFactor, mFactor, ...data }, `process (${id}) of APC has completed`);
