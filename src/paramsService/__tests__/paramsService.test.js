@@ -7,7 +7,7 @@ describe('Module for Params Service', () => {
 
   it('test thickness post api response status to be 200', async  () => { 
 
-    jest.setTimeout(30000);
+    // jest.setTimeout(30000);
 
     const tFactor = Math.random().toFixed(2);
     request(app)
