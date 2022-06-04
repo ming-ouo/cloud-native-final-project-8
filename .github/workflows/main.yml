@@ -34,6 +34,10 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
+      # check-ot our repository
+      - name: Checkout files    
+        uses: actions/checkout@v2
+        
       # Install doctl
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
