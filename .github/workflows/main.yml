@@ -27,7 +27,7 @@ jobs:
       - name: Testing
         run: npm test
 
-  DockerImage:
+  BuildAndPushDockerImage:
     needs: Testing
     runs-on: ubuntu-latest
     strategy:
