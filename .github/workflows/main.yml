@@ -2,7 +2,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - npm-test-failed
+      - testCICD_no_failed
   pull_request:
 
 
