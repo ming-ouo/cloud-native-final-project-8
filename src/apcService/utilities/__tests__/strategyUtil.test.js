@@ -7,7 +7,7 @@ describe('Module strategyUtil', () => {
   const fakeMFactor = 0.5;
 
   it('Method sharonStrategy', () => {
-    const res = new steakStrategy.sharonStrategy({fakeThickness}, {fakeTFactor});
+    const res = new steakStrategy.sharonStrategy({fakeThickness}, {fakeTFactor}).getInfo();
 
     expect(res).toStrictEqual({
       period: 20,
@@ -16,7 +16,7 @@ describe('Module strategyUtil', () => {
   });
 
   it('Method defaultStrategy', () => {
-    const res = new steakStrategy.defaultStrategy({fakeMoisture}, {fakeMFactor});
+    const res = new steakStrategy.defaultStrategy({fakeMoisture}, {fakeMFactor}).getInfo();
 
     expect(res).toStrictEqual({
       period: (fakeMoisture * fakeMFactor).toFixed(2),
@@ -25,7 +25,7 @@ describe('Module strategyUtil', () => {
   });
 
   it('Method stripStrategy', () => {
-    const res = new steakStrategy.sStrategy({fakeThickness, fakeMoisture}, {fakeTFactor, fakeMFactor});
+    const res = new steakStrategy.sStrategy({fakeThickness, fakeMoisture}, {fakeTFactor, fakeMFactor}).getInfo();
 
     expect(res).toStrictEqual({
       period: (fakeMoisture * fakeMFactor + 20).toFixed(2),

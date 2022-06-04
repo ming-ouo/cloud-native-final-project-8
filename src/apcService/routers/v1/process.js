@@ -25,12 +25,12 @@ router.post('/api/v1/process', async (req, res) => {
 
     let data = null;
     if (type === 'SHARON') {
-      data = new steakStrategy.sharonStrategy({thickness}, {tFactor});
+      data = new steakStrategy.sharonStrategy({thickness}, {tFactor}).getInfo();
     } else if (type === 'STRIP') {
-      data = new steakStrategy.stripStrategy({thickness, moisture}, {tFactor, mFactor});
+      data = new steakStrategy.stripStrategy({thickness, moisture}, {tFactor, mFactor}).getInfo();
     }
     else {
-      data = new steakStrategy.defaultStrategy({moisture}, {mFactor});
+      data = new steakStrategy.defaultStrategy({moisture}, {mFactor}).getInfo();
     }
 
     logger.end(handle, { tFactor, mFactor, ...data }, `process (${id}) of APC has completed`);

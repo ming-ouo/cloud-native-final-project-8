@@ -2,8 +2,10 @@ class Strategy {
   constructor(params, factors) {
       this.params = params;
       this.factors = factors;
+  };
+  getInfo(){
+    
   }
-  getInfo();
 }
 
 class defaultStrategy extends Strategy{
