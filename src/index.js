@@ -4,6 +4,7 @@ dotenv.config();
 const { nats } = require('config');
 
 const NodeCache = require('node-cache');
+const MongoCache = require('./utilities/mongoCache');
 
 const logger = require('./utilities/logger')('INDEX');
 const NATSClient = require('./utilities/natsClient');
@@ -43,10 +44,34 @@ const initGlobalNATSClient = async () => {
 };
 
 const initGlobalCache = async () => {
-  global.cache = new NodeCache();
+    //global.cache = new NodeCache();
 
-  global.cache.set('FACTOR_THICKNESS', 0.5);
-  global.cache.set('FACTOR_MOISTURE', 0.5);
+    //global.cache.set('FACTOR_THICKNESS', 0.5);
+    //global.cache.set('FACTOR_MOISTURE', 0.5);
+
+    global.cache = new MongoCache(
+        `mongodb://${process.env.MONGO_INITDB_ROOT_USERNAME}:${process.env.MONGO_INITDB_ROOT_PASSWORD}@${process.env.MONGO_HOST}/${process.env.MONGO_CACHE_DB_NAME}?authSource=admin`,
+        `${process.env.MONGO_CACHE_DB_NAME}`,
+        `${process.env.MONGO_CACHE_COLLECTION_NAME}`
+    );
+
+    await global.cache.connect();
+
+    let factor_thickness_result = await global.cache.get('FACTOR_THICKNESS');
+    if (factor_thickness_result === undefined) {
+        await global.cache.set('FACTOR_THICKNESS', 0.5);
+    }
+
+    let factor_moisture_result = await global.cache.get('FACTOR_MOISTURE');
+    if (factor_moisture_result === undefined) {
+        await global.cache.set('FACTOR_MOISTURE', 0.5);
+    }
+
+    factor_thickness_result = await global.cache.get('FACTOR_THICKNESS');
+    factor_moisture_result = await global.cache.get('FACTOR_MOISTURE');
+
+    logger.info(`FACTOR_THICKNESS: ${factor_thickness_result}`);
+    logger.info(`FACTOR_MOISTURE": ${factor_moisture_result}`);
 };
 
 const run = async () => {
