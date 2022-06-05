@@ -4,6 +4,11 @@ const express = require('express');
 
 const logger = require('../../../utilities/logger')('PARAMS_SERVICE');
 
+const bodyParser = require('body-parser');
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const router = express.Router();
 
 router.post('/api/v1/factor/thickness', async (req, res) => {
@@ -64,4 +69,7 @@ router.post('/api/v1/factor/moisture', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = {
+  router,
+  app
+};

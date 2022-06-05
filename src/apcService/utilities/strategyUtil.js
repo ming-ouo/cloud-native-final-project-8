@@ -1,22 +1,54 @@
-const defaultStrategy = (moisture, mFactor) => {
-  const period = (moisture * mFactor).toFixed(2);
+class Strategy {
+  constructor(params, factors) {
+      this.params = params;
+      this.factors = factors;
 
-  return {
-    period,
-    temperature: 100,
   };
-};
+  getInfo(){
 
-const sharonStrategy = (thickness, tFactor) => {
-  const temperature = (thickness * tFactor).toFixed(2);
+  }
+}
 
-  return {
-    period: 20,
-    temperature,
-  };
-};
+class defaultStrategy extends Strategy{
+
+  getInfo() {
+    const period = (this.params.moisture * this.factors.mFactor).toFixed(2);
+
+    return {
+      period: period,
+      temperature: 100,
+    };
+  }
+}
+
+class sharonStrategy extends  Strategy{
+
+  getInfo() {
+    const temperature = (this.params.thickness * this.factors.tFactor).toFixed(2);
+
+    return {
+      period: 20,
+      temperature,
+    };
+  }
+}
+
+class stripStrategy extends  Strategy{
+
+  getInfo() {
+    const temperature = (this.params.thickness * this.factors.tFactor).toFixed(2);
+    const period = (this.params.moisture * this.factors.mFactor + 20).toFixed(2);
+
+    return {
+      period,
+      temperature,
+    };
+  }
+}
+
 
 module.exports = {
   defaultStrategy,
   sharonStrategy,
+  stripStrategy
 };

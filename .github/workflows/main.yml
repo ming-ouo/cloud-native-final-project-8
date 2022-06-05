@@ -1,23 +1,82 @@
-name: CI
+name: CI/CD
 on:
   push:
     branches:
       - main
   pull_request:
 
-
 jobs:
-  main:
+  Testing:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
     steps:
+      # check-ot our repository
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: nrwl/nx-set-shas@v2
-      - run: npm ci
-      - run: npm test  
-      - name: Process jest results with default
-        if: always()
-        uses: im-open/process-jest-test-results@v2.0.5
+
+      # install app dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+          npm ci
+
+      # Testing our apps
+      - name: Testing
+        run: npm test
+
+  BuildAndPushDockerImage:
+    needs: Testing
+    runs-on: ubuntu-latest
+    steps:
+      # check-ot our repository
+      - name: Checkout files    
+        uses: actions/checkout@v2
+
+      # Install doctl
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      # Build container image
+      - name: Build container image
+        run: docker build -t ${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:$(echo $GITHUB_SHA | head -c7) .
+
+      # Log in to DigitalOcean
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 1200
+
+      # Push image to DigitalOcean Container Registry
+      - name: Push image to DigitalOcean Container Registry
+        run: docker push ${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:$(echo $GITHUB_SHA | head -c7)
+
+  DeployAndVerify:
+    needs: BuildAndPushDockerImage
+    runs-on: ubuntu-latest
+    steps:
+      # check-ot our repository
+      - name: Checkout files    
+        uses: actions/checkout@v2
+      
+      # Install doctl
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      # Update deployment file
+      - name: Update deployment file
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|{{IMAGE}}|${{ secrets.REGISTRY_ENDPOINT }}/apc-simulator:'${TAG}'|' $GITHUB_WORKSPACE/infra/app/deployment.yml
+
+      # Save DigitalOcean kubeconfig with short-lived credentials
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: kubectl apply -f $GITHUB_WORKSPACE/infra/app/deployment.yml
+
+      - name: Verify deployment
+        run: kubectl rollout status deployment/apc-simulator

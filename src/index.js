@@ -74,15 +74,69 @@ const initGlobalCache = async () => {
     logger.info(`FACTOR_MOISTURE": ${factor_moisture_result}`);
 };
 
+
+class ServiceManager {
+  constructor() { 
+    this._service = null;
+  }
+
+  set setService(service) {
+    this._service = service;
+  }
+
+  get service() { 
+    return this._service;
+  }
+
+  runService() { 
+    this._service.runService();
+  }
+}
+
+
+class ApcService { 
+  async runService() { 
+    await apcService.run();
+  }
+}
+
+class ParamsService { 
+  async runService() { 
+    await paramsService.run();
+  }
+}
+
+
+class MeasureService { 
+  async runService() { 
+    await measureService.run();
+  }
+}
+
+
 const run = async () => {
   // initialize the global resource
   await initGlobalNATSClient();
   await initGlobalCache();
 
-  // run all services
-  await apcService.run();
-  paramsHandle = await paramsService.run();
-  measureHandle = await measureService.run();
+
+  const serviceManager = new ServiceManager();
+  const apc = new ApcService();
+  const params = new ParamsService();
+  const measure = new MeasureService();
+
+
+  serviceManager.setService = apc;
+
+
+  serviceManager.runService();
+
+  serviceManager.setService = params;
+  paramsHandle = serviceManager.runService();
+
+  serviceManager.setService = measure;
+  measureHandle = serviceManager.runService();
+
 };
 
 run();
