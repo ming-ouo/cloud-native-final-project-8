@@ -34,3 +34,8 @@ spec:
                 secretKeyRef:
                   name: mongo-creds
                   key: password
+
+            - name: MONGO_CACHE_DB_NAME
+              value: mongo_cache
+            - name: MONGO_CACHE_COLLECTION_NAME
+              value: bucket_1
