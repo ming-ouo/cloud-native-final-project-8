@@ -87,7 +87,7 @@
 
 1. 開啟 powershell in admin，安裝choco
 
-    ```Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')) ```
+    ```Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))```
 
 2. 安裝 helm 到 kubenetes 中
 
@@ -106,11 +106,11 @@
 
     ```helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace --values values.yaml```
 
-    上述指令為用 **prometheus-community/kube-prometheus-stack** 裡面的template，建立一個 release name **kube-prometheus-stack** 
+    - 上述指令為用 **prometheus-community/kube-prometheus-stack** 裡面的template，建立一個 release name **kube-prometheus-stack** 
 
-    需要修改的部分 (e.g: 新增一個 prometheus job) 則寫在 **values.yaml** 中
+    - 需要修改的部分 (e.g: 新增一個 prometheus job) 則寫在 **values.yaml** 中
 
-    這個 template 會建立 Prometheus, Prometheus Operator, Alertmanager, Grafana, kube-state-metrics, prometheus-node-exporter 的 pod 
+    - 這個 template 會建立 Prometheus, Prometheus Operator, Alertmanager, Grafana, kube-state-metrics, prometheus-node-exporter 的 pod 
 
 2. Helm 指令執行完成之後，驗證有沒有正確安裝成功
 
@@ -120,16 +120,17 @@
 
     ```kubectl port-forward -n=monitoring svc/kube-prometheus-stack-prometheus 9090:9090```
 
-    執行完成後，可從 **http://localhost:9090/** 進入 prometheus
+    - 執行完成後，可從 **http://localhost:9090/** 進入 prometheus
 
 4.  若要從 local 存取 K8S 內的 Grafana Service ，使用 port forwarding 執行以下指令
 
     ```kubectl port-forward -n=monitoring svc/kube-prometheus-stack-grafana 8080:80```
 
-    執行完成後，可從 **http://localhost:9090/** 進入 grafana
+    - 執行完成後，可從 **http://localhost:9090/** 進入 grafana
     Grafana 帳號: admin / 密碼: prom-operator
     
 ## [Grafana-Dashboard] import  json dashboard file
+
 - 我們有三個dashbord，分別觀察 apc-simulator pod、three nodes 和 overall
 
 
