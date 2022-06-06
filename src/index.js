@@ -177,6 +177,16 @@ register.setDefaultLabels({
 // Enable the collection of default metrics
 client.collectDefaultMetrics({ register })
 
+const thickness_metric = new client.Gauge({
+  name: 'thickness',
+  help: 'thickness_metric',
+});
+
+const moisture_metric = new client.Gauge({
+  name: 'moisture',
+  help: 'moisture_metric',
+});
+
 const thickness_factor_metric = new client.Gauge({
   name: 'thickness_factor',
   help: 'thickness_factor_metric',
@@ -189,9 +199,13 @@ const moisture_factor_metric = new client.Gauge({
 
 register.registerMetric(thickness_factor_metric);
 register.registerMetric(moisture_factor_metric);
+register.registerMetric(thickness_metric);
+register.registerMetric(moisture_metric);
 
 global.thickness_factor_metric = thickness_factor_metric
 global.moisture_factor_metric = moisture_factor_metric
+global.thickness_metric = thickness_metric
+global.moisture_metric = moisture_metric
 
 const app = express();
 
