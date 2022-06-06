@@ -58,7 +58,7 @@ const factorSeries = [
     FACTOR_TYPE: {
       factor: Math.random().toFixed(2),
     },
-    PROMETHEUS_PARAM: (param) => global.thickness_factor_metric(param)
+    PROMETHEUS_PARAM: (param) => global.thickness_factor_metric.set(param)
   }
 ]
 
