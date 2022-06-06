@@ -51,14 +51,14 @@ const factorSeries = [
     FACTOR_TYPE: {
       factor: Math.random().toFixed(2),
     },
-    PROMETHEUS_PARAM: () => global.moisture_factor_metric
+    PROMETHEUS_PARAM: (param) => global.moisture_factor_metric.set(param)
   },
   {
     API: "thickness",
     FACTOR_TYPE: {
       factor: Math.random().toFixed(2),
     },
-    PROMETHEUS_PARAM: () => global.thickness_factor_metric
+    PROMETHEUS_PARAM: (param) => global.thickness_factor_metric(param)
   }
 ]
 
@@ -73,7 +73,7 @@ const postFactors = () => {
 
     let params = factorManager.getParams();
     
-    element.PROMETHEUS_PARAM.set(parseFloat(element.FACTOR_TYPE.factor));
+    element.PROMETHEUS_PARAM(parseFloat(element.FACTOR_TYPE.factor));
 
     await axios.post(`${domainService.params.endpoint}/api/v1/factor/${element.API}`, params);
         
