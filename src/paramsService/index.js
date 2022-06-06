@@ -51,14 +51,14 @@ const factorSeries = [
     FACTOR_TYPE: {
       factor: Math.random().toFixed(2),
     },
-    PROMETHEUS_PARAM: global.moisture_factor_metric
+    PROMETHEUS_PARAM: () => global.moisture_factor_metric
   },
   {
     API: "thickness",
     FACTOR_TYPE: {
       factor: Math.random().toFixed(2),
     },
-    PROMETHEUS_PARAM: global.thickness_factor_metric
+    PROMETHEUS_PARAM: () => global.thickness_factor_metric
   }
 ]
 
