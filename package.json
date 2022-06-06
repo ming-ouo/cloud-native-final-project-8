@@ -28,6 +28,7 @@
     "moment": "^2.29.3",
     "mongodb": "^4.6.0",
     "nats": "^2.6.1",
+    "prom-client": "^14.0.1",
     "node-cache": "^5.1.2",
     "supertest": "^6.2.3",
     "uuid": "^8.3.2",
