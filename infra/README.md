@@ -1,7 +1,7 @@
 # Infa
 ## [Deploy] MongoDB
 1. 以下為安裝檔案
-https://github.com/ming-ouo/cloud-native-final-project/tree/main/infra/db
+    https://github.com/ming-ouo/cloud-native-final-project/tree/main/infra/db
 
     ```
     mongodb-deployment.yaml
@@ -12,26 +12,26 @@ https://github.com/ming-ouo/cloud-native-final-project/tree/main/infra/db
     ```
 
 2. 快速安裝步驟
-   可以直接執行  ```kubectl apply -f .```
+    可以直接執行  ```kubectl apply -f .```
 
 3. 創建mongoDB Secret 
   
-  ```kubectl apply -f mongodb-secrets.yaml```
+    ```kubectl apply -f mongodb-secrets.yaml```
   
-  k8s中的Secret是用於向container提供敏感訊息，數據以base64編碼格式儲存。為了MongoDB的安全性，使用密碼限制使用者對DB的使用。使用Secrets將我們想要的密碼load到容器中。使用完secret yaml檔後可刪除或加入`.gitignore`
+    k8s中的Secret是用於向container提供敏感訊息，數據以base64編碼格式儲存。為了MongoDB的安全性，使用密碼限制使用者對DB的使用。使用Secrets將我們想要的密碼load到容器中。使用完secret yaml檔後可刪除或加入`.gitignore`
   
-  ```shell=
-  ## mongodb-secrets.yaml
-  
-apiVersion: v1
-data:
-    password: 123456789 
-    username: abcdefghij 
-kind: Secret
-metadata:
-    creationTimestamp: null
-    name: mongo-creds
-  ```
+    ```shell=
+    ## mongodb-secrets.yaml
+    
+    apiVersion: v1
+    data:
+        password: 123456789 
+        username: abcdefghij 
+    kind: Secret
+    metadata:
+        creationTimestamp: null
+        name: mongo-creds
+    ```
    
 4. 創建mongoDB Persistent Volume
     
