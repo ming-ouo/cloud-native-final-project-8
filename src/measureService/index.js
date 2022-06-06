@@ -1,4 +1,5 @@
 const { cron, domainService } = require('config');
+const logger = require('../utilities/logger')('INDEX');
 
 const axios = require('axios');
 const uuidv4 = require('uuid').v4;
@@ -54,7 +55,9 @@ const run = async () => {
 
     payloadManager.setType = payloadType;
     const payload = payloadManager.getData();
-
+    global.thickness_metric.set(parseFloat(paramsForPayloadType.thickness));
+    global.moisture_metric.set(parseFloat(paramsForPayloadType.moisture));
+    
     const { data } = await axios.post(`${domainService.apc.endpoint}/api/v1/process`, payload);
   }, cron.measurePeriod);
 
