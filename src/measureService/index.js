@@ -55,9 +55,9 @@ const run = async () => {
 
     payloadManager.setType = payloadType;
     const payload = payloadManager.getData();
-    logger.info(`setting paramsForPayloadType.thickness: ${paramsForPayloadType.thickness}`);
+    logger.info(`setting paramsForPayloadType.thickness: ${paramsForPayloadType.thickness} ${typeof paramsForPayloadType.thickness}`);
     global.thickness_metric.set((paramsForPayloadType.thickness));
-    logger.info(`setting paramsForPayloadType.moisture: ${paramsForPayloadType.moisture}`);
+    logger.info(`setting paramsForPayloadType.moisture: ${paramsForPayloadType.moisture} ${typeof paramsForPayloadType.moisture}`);
     global.moisture_metric.set((paramsForPayloadType.moisture));
     
     const { data } = await axios.post(`${domainService.apc.endpoint}/api/v1/process`, payload);
