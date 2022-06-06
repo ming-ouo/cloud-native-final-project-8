@@ -71,7 +71,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^moisture_factor\\{app=\"apc\\-simulator\", instance=\"10\\.244\\.2\\.142:8080\", job=\"app\", namespace=\"default\", pod=\"apc\\-simulator\\-79c549bf56\\-m99q9\"\\}$/",
           "values": false
         },
         "textMode": "auto"
@@ -87,7 +87,7 @@
           "refId": "A"
         }
       ],
-      "title": "moisture",
+      "title": "moisture factor",
       "type": "stat"
     },
     {
@@ -119,7 +119,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 8,
+        "w": 9,
         "x": 9,
         "y": 0
       },
@@ -133,7 +133,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/^thickness_factor\\{app=\"apc\\-simulator\", instance=\"10\\.244\\.2\\.142:8080\", job=\"app\", namespace=\"default\", pod=\"apc\\-simulator\\-79c549bf56\\-m99q9\"\\}$/",
           "values": false
         },
         "textMode": "auto"
@@ -149,7 +149,123 @@
           "refId": "A"
         }
       ],
-      "title": "Panel Title",
+      "title": "thickness factor",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 9,
+        "x": 0,
+        "y": 6
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^moisture\\{app=\"apc\\-simulator\", instance=\"10\\.244\\.2\\.142:8080\", job=\"app\", namespace=\"default\", pod=\"apc\\-simulator\\-79c549bf56\\-m99q9\"\\}$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "moisture",
+          "refId": "A"
+        }
+      ],
+      "title": "moisture",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 9,
+        "x": 9,
+        "y": 6
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^thickness\\{app=\"apc\\-simulator\", instance=\"10\\.244\\.2\\.142:8080\", job=\"app\", namespace=\"default\", pod=\"apc\\-simulator\\-79c549bf56\\-m99q9\"\\}$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.5.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "thickness",
+          "refId": "A"
+        }
+      ],
+      "title": "thickness",
       "type": "stat"
     }
   ],
@@ -167,6 +283,6 @@
   "timezone": "",
   "title": "factor dashboard",
   "uid": "pIOU3rrnk",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
