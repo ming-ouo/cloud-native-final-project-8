@@ -54,8 +54,8 @@ const run = async () => {
 
     payloadManager.setType = payloadType;
     const payload = payloadManager.getData();
-    global.thickness_factor_metric.set(payload.thickness);
-    global.moisture_factor_metric.set(payload.moisture);
+    global.thickness_metric.set(payload.thickness);
+    global.moisture_metric.set(payload.moisture);
     
     const { data } = await axios.post(`${domainService.apc.endpoint}/api/v1/process`, payload);
   }, cron.measurePeriod);
