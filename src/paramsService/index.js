@@ -73,8 +73,7 @@ const postFactors = () => {
 
     let params = factorManager.getParams();
     
-    logger.info(`setting element.API factor: ${element.FACTOR_TYPE.factor}`);
-    element.PROMETHEUS_PARAM.set((element.FACTOR_TYPE.factor));
+    element.PROMETHEUS_PARAM.set(element.FACTOR_TYPE.factor.float());
 
     await axios.post(`${domainService.params.endpoint}/api/v1/factor/${element.API}`, params);
         
