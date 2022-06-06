@@ -13,6 +13,9 @@ const measureService = require('./measureService');
 const apcService = require('./apcService');
 const paramsService = require('./paramsService');
 
+const client = require('prom-client')
+const express = require('express');
+
 let measureHandle = null;
 let paramsHandle = null;
 
@@ -162,3 +165,42 @@ process.on('SIGINT', async () => {
 
   process.exit();
 });
+
+// Create a Registry which registers the metrics
+const register = new client.Registry();
+
+// Add a default label which is added to all metrics
+register.setDefaultLabels({
+    app: 'apc-simulator'
+});
+
+// Enable the collection of default metrics
+client.collectDefaultMetrics({ register })
+
+const thickness_factor_metric = new client.Gauge({
+  name: 'thickness_factor',
+  help: 'thickness_factor_metric',
+});
+
+const moisture_factor_metric = new client.Gauge({
+  name: 'moisture_factor',
+  help: 'moisture_factor_metric',
+});
+
+register.registerMetric(thickness_factor_metric);
+register.registerMetric(moisture_factor_metric);
+
+global.thickness_factor_metric = thickness_factor_metric
+global.moisture_factor_metric = moisture_factor_metric
+
+const app = express();
+
+app.get('/metrics', async (req, res) => {
+    //global.thickness_factor_metric.set((Math.random() * (0.120 - 0.0200) + 0.0200))
+    //global.moisture_factor_metric.set((Math.random() * (0.120 - 0.0200) + 0.0200))
+
+    res.setHeader('Content-Type', register.contentType);
+    res.send(await register.metrics());
+});
+
+app.listen(8080, () => console.log('Server is running on http://localhost:8080, metrics are exposed on http://localhost:8080/metrics'));
