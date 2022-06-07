@@ -71,10 +71,10 @@ const initGlobalCache = async () => {
     logger.info(`FACTOR_MOISTURE": ${factor_moisture_result}`);
 };
 
-const initPromClient = async() => {
-    // Create a Registry which registers the metrics
-    const register = new promClient.Registry();
+// Create a Registry which registers the metrics
+const register = new promClient.Registry();
 
+const initPromClient = async() => {
     // Add a default label which is added to all metrics
     register.setDefaultLabels({
         app: 'apc-simulator'
