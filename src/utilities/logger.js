@@ -14,8 +14,6 @@ const customFormat = printf(({ timestamp, label, message, level, ...metadata }) 
     }
 
     return JSON.stringify(ret);
-
-    //return `[${label}] | ${timestamp} | ${level} | ${message} | ${JSON.stringify(metadata)}`;
 });
 
 const func = (loggerLabel) => {
