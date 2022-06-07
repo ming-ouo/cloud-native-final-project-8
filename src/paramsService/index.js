@@ -29,6 +29,7 @@ class FactorManager {
   }
 
   getParams() { 
+
     this.factorType._factor = Math.random().toFixed(2);
     return this.factorType._factor;
   };
