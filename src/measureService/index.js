@@ -44,20 +44,32 @@ class PayloadType {
 
 const payloadManager = new PayloadManager();
 
-const run = async () => {
-  const handler = setInterval(async () => {
-    const index = Math.floor((Math.random() * 10) % types.length);
-    const id = uuidv4();
+
+
+const setPayload = () => { 
+
+  const index = Math.floor((Math.random() * 10) % types.length);
+  const id = uuidv4();
     
     // if need to add new payload type => add into paramsForTypes
-    const paramsForPayloadType = paramsForTypes(id)[index];
-    const payloadType = new PayloadType(paramsForPayloadType);
+  const paramsForPayloadType = paramsForTypes(id)[index];
+  const payloadType = new PayloadType(paramsForPayloadType);
 
-    payloadManager.setType = payloadType;
-    const payload = payloadManager.getData();
+  payloadManager.setType = payloadType;
+  const payload = payloadManager.getData();
+  
+  return ({ payload, paramsForPayloadType });
+
+}
+
+const run = async () => {
+  const handler = setInterval(async () => {
+
+    const { payload, paramsForPayloadType } = setPayload();
     global.thickness_metric.set(parseFloat(paramsForPayloadType.thickness));
     global.moisture_metric.set(parseFloat(paramsForPayloadType.moisture));
-    
+
+
     const { data } = await axios.post(`${domainService.apc.endpoint}/api/v1/process`, payload);
   }, cron.measurePeriod);
 
@@ -68,5 +80,6 @@ module.exports = {
   run,
   paramsForTypes,
   PayloadManager,
-  PayloadType
+  PayloadType,
+  setPayload
 };

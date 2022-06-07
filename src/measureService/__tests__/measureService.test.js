@@ -1,11 +1,14 @@
 // const { natsMessageHandler } = require('../messageUtil');
-const { paramsForTypes, PayloadManager, PayloadType } = require('../index.js');
+const { setPayload, paramsForTypes, PayloadManager, PayloadType } = require('../index.js');
 const uuidv4 = require('uuid').v4;
+const NodeCache = require('node-cache');
 
 
 describe('Module for Measure Service', () => {
 
-
+  beforeEach(() => {
+    global.cache = new NodeCache();
+  });
   it('...The value of Sharon moisture range between upper and lower bound ', () => {
 
     const moistureLowerBound = 60;
@@ -86,9 +89,15 @@ describe('Module for Measure Service', () => {
 
   })
 
+  it('...test for payload', () => { 
+    const a = setPayload();
 
-  
+    console.log(a);
+
+    expect(a.payload).toStrictEqual(a.paramsForPayloadType)
 
 
+
+  })
 
 });
