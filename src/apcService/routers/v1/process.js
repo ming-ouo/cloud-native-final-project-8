@@ -22,15 +22,24 @@ router.post('/api/v1/process', async (req, res) => {
     }
     const tFactor = global.cache.get('FACTOR_THICKNESS');
     const mFactor = global.cache.get('FACTOR_MOISTURE');
+    
+    const params = {
+     "thickness": thickness,
+      "moisture": moisture
+    }
+    const factors = {
+      "tFactor": tFactor,
+      "mFactor": mFactor
+    }
 
     let data = null;
     if (type === 'SHARON') {
-      data = new steakStrategy.sharonStrategy({thickness}, {tFactor}).getInfo();
+      data = new steakStrategy.sharonStrategy(params, factors).getInfo();
     } else if (type === 'STRIP') {
-      data = new steakStrategy.stripStrategy({thickness, moisture}, {tFactor, mFactor}).getInfo();
+      data = new steakStrategy.stripStrategy(params, factors).getInfo();
     }
     else {
-      data = new steakStrategy.defaultStrategy({moisture}, {mFactor}).getInfo();
+      data = new steakStrategy.defaultStrategy(params, factors).getInfo();
     }
 
     logger.end(handle, { tFactor, mFactor, ...data }, `process (${id}) of APC has completed`);
