@@ -21,8 +21,8 @@ const paramsForTypes = (id) => ([
   },
 ])
 
-class PayloadManager { 
-  constructor() { 
+class PayloadManager {
+  constructor() {
     this.steakType = null;
   }
 
@@ -30,48 +30,43 @@ class PayloadManager {
     this.steakType = params;
   }
 
-  getData() { 
+  getData() {
     return this.steakType._payload;
   };
 }
 
 
-class PayloadType { 
-  constructor(params) { 
+class PayloadType {
+  constructor(params) {
     this._payload = params;
   }
 }
 
 const payloadManager = new PayloadManager();
 
+const setPayload = () => {
+    const index = Math.floor((Math.random() * 10) % types.length);
+    const id = uuidv4();
 
-
-const setPayload = () => { 
-
-  const index = Math.floor((Math.random() * 10) % types.length);
-  const id = uuidv4();
-    
     // if need to add new payload type => add into paramsForTypes
-  const paramsForPayloadType = paramsForTypes(id)[index];
-  const payloadType = new PayloadType(paramsForPayloadType);
+    const paramsForPayloadType = paramsForTypes(id)[index];
+    const payloadType = new PayloadType(paramsForPayloadType);
 
-  payloadManager.setType = payloadType;
-  const payload = payloadManager.getData();
-  
-  return ({ payload, paramsForPayloadType });
+    payloadManager.setType = payloadType;
+    const payload = payloadManager.getData();
 
+    return ({ payload, paramsForPayloadType });
 }
 
 const run = async () => {
-  const handler = setInterval(async () => {
+    const handler = setInterval(async () => {
+        const { payload, paramsForPayloadType } = setPayload();
 
-    const { payload, paramsForPayloadType } = setPayload();
-    global.thickness_metric.set(parseFloat(paramsForPayloadType.thickness));
-    global.moisture_metric.set(parseFloat(paramsForPayloadType.moisture));
+        global.thickness_metric.set(parseFloat(paramsForPayloadType.thickness));
+        global.moisture_metric.set(parseFloat(paramsForPayloadType.moisture));
 
-
-    const { data } = await axios.post(`${domainService.apc.endpoint}/api/v1/process`, payload);
-  }, cron.measurePeriod);
+        const { data } = await axios.post(`${domainService.apc.endpoint}/api/v1/process`, payload);
+    }, cron.measurePeriod);
 
   return handler;
 };
