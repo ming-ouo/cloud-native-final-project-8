@@ -20,8 +20,8 @@ router.post('/api/v1/process', async (req, res) => {
     if (!global.cache) {
       throw new Error('the global cache is not existed');
     }
-    const tFactor = global.cache.get('FACTOR_THICKNESS');
-    const mFactor = global.cache.get('FACTOR_MOISTURE');
+    const tFactor = await global.cache.get('FACTOR_THICKNESS');
+    const mFactor = await global.cache.get('FACTOR_MOISTURE');
     
     const params = {
      "thickness": thickness,
