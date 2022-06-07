@@ -28,7 +28,7 @@ class sharonStrategy extends  Strategy{
 
     return {
       period: 20,
-      temperature,
+      temperature: temperature,
     };
   }
 }
@@ -40,8 +40,8 @@ class stripStrategy extends  Strategy{
     const period = (this.params.moisture * this.factors.mFactor + 20).toFixed(2);
 
     return {
-      period,
-      temperature,
+      period: period,
+      temperature: temperature,
     };
   }
 }
