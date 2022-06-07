@@ -62,13 +62,16 @@ const setPayload = () => {
 
 }
 
+const setMetric = payloadType => { 
+    global.thickness_metric.set(parseFloat(payloadType.thickness));
+    global.moisture_metric.set(parseFloat(payloadType.moisture));
+}
+
 const run = async () => {
   const handler = setInterval(async () => {
 
     const { payload, paramsForPayloadType } = setPayload();
-    global.thickness_metric.set(parseFloat(paramsForPayloadType.thickness));
-    global.moisture_metric.set(parseFloat(paramsForPayloadType.moisture));
-
+    setMetric(paramsForPayloadType)
 
     const { data } = await axios.post(`${domainService.apc.endpoint}/api/v1/process`, payload);
   }, cron.measurePeriod);
@@ -81,5 +84,6 @@ module.exports = {
   paramsForTypes,
   PayloadManager,
   PayloadType,
-  setPayload
+  setPayload,
+  setMetric
 };

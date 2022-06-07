@@ -1,5 +1,5 @@
 // const { natsMessageHandler } = require('../messageUtil');
-const { setPayload, paramsForTypes, PayloadManager, PayloadType } = require('../index.js');
+const { setMetric, setPayload, paramsForTypes, PayloadManager, PayloadType } = require('../index.js');
 const uuidv4 = require('uuid').v4;
 const NodeCache = require('node-cache');
 
@@ -8,7 +8,16 @@ describe('Module for Measure Service', () => {
 
   beforeEach(() => {
     global.cache = new NodeCache();
+    global.thickness_metric = {
+      set: jest.fn().mockReturnValueOnce(true),
+    };
+
+    global.moisture_metric = {
+      set: jest.fn().mockReturnValueOnce(true),
+    };
+
   });
+
   it('...The value of Sharon moisture range between upper and lower bound ', () => {
 
     const moistureLowerBound = 60;
@@ -90,14 +99,16 @@ describe('Module for Measure Service', () => {
   })
 
   it('...test for payload', () => { 
-    const a = setPayload();
-
-    console.log(a);
-
-    expect(a.payload).toStrictEqual(a.paramsForPayloadType)
-
-
-
+    const data = setPayload();
+    expect(data.payload).toStrictEqual(data.paramsForPayloadType)
   })
+
+
+  it('...test for set metric', () => { 
+    const data = setPayload();
+
+    setMetric(data.paramsForPayloadType)
+  })
+
 
 });
