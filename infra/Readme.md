@@ -1,4 +1,4 @@
-# Infa Deployment
+# Infra Deployment
 ## [app] Apc-simulator
 
 1. 增加環境變數給mongodb連接使用
@@ -126,8 +126,8 @@
 
     ```kubectl port-forward -n=monitoring svc/kube-prometheus-stack-grafana 8080:80```
 
-    - 執行完成後，可從 **http://localhost:9090/** 進入 grafana
-    Grafana 帳號: admin / 密碼: prom-operator
+    - 執行完成後，可從 **http://localhost:8080/** 進入 grafana
+    - Grafana 帳號: admin / 密碼: prom-operator
     
 ## [Grafana-Dashboard] import  json dashboard file
 
