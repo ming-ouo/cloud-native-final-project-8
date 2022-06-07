@@ -1,5 +1,5 @@
 // const { natsMessageHandler } = require('../messageUtil');
-const { paramsForTypes } = require('../index.js');
+const { paramsForTypes, PayloadManager, PayloadType } = require('../index.js');
 const uuidv4 = require('uuid').v4;
 
 
@@ -57,7 +57,34 @@ describe('Module for Measure Service', () => {
 
       }
     })
-  }) 
+  })
+  
+  it('...test for payload manager and payload type', () => { 
+    const id = uuidv4();
+    
+    const thickness = 2 + Math.random().toFixed(2);
+    const moisture = 6 + Math.random().toFixed(2);
+    const payloadManager = new PayloadManager();
+    const payloadType = new PayloadType({
+      id,
+      type: 'SHARON',
+      thickness,
+      moisture
+    });
+    
+    payloadManager.setType = payloadType;
+
+    const payload = payloadManager.getData();
+    expect(payload).toStrictEqual({
+      id,
+      type: 'SHARON',
+      thickness,
+      moisture
+    })
+
+
+
+  })
 
 
   

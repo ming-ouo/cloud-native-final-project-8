@@ -66,5 +66,7 @@ const run = async () => {
 
 module.exports = {
   run,
-  paramsForTypes
+  paramsForTypes,
+  PayloadManager,
+  PayloadType
 };
