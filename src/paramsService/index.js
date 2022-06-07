@@ -45,19 +45,21 @@ class FactorType {
 
 // API: post api's endpoint
 // FACTOR_TYPE: change the factor here to adjust the post param
-
+function getfactor() {
+  return Math.random().toFixed(2);
+}
 const factorSeries = [
   {
     API: "moisture",
     FACTOR_TYPE: {
-      factor: () => return Math.random().toFixed(2)
+      factor: getfactor()
     },
     PROMETHEUS_PARAM: (param) => global.moisture_factor_metric.set(param)
   },
   {
     API: "thickness",
     FACTOR_TYPE: {
-      factor: () => return Math.random().toFixed(2)
+      factor: getfactor()
     },
     PROMETHEUS_PARAM: (param) => global.thickness_factor_metric.set(param)
   }
