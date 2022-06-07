@@ -81,24 +81,24 @@ const initPromClient = async() => {
     });
 
     // Enable the collection of default metrics
-    client.collectDefaultMetrics({ register })
+    promClient.collectDefaultMetrics({ register })
 
-    const thickness_metric = new client.Gauge({
+    const thickness_metric = new promClient.Gauge({
         name: 'thickness',
         help: 'thickness_metric',
     });
 
-    const moisture_metric = new client.Gauge({
+    const moisture_metric = new promClient.Gauge({
         name: 'moisture',
         help: 'moisture_metric',
     });
 
-    const thickness_factor_metric = new client.Gauge({
+    const thickness_factor_metric = new promClient.Gauge({
         name: 'thickness_factor',
         help: 'thickness_factor_metric',
     });
 
-    const moisture_factor_metric = new client.Gauge({
+    const moisture_factor_metric = new promClient.Gauge({
         name: 'moisture_factor',
         help: 'moisture_factor_metric',
     });
