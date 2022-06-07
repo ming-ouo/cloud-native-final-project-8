@@ -25,14 +25,14 @@ jobs:
 
       # Testing our apps
       - name: Testing
-        run: npm test
+        run: npm test -- --coverage
 
   BuildAndPushDockerImage:
     needs: Testing
     runs-on: ubuntu-latest
     steps:
       # check-ot our repository
-      - name: Checkout files    
+      - name: Checkout files
         uses: actions/checkout@v2
 
       # Install doctl
@@ -58,9 +58,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # check-ot our repository
-      - name: Checkout files    
+      - name: Checkout files
         uses: actions/checkout@v2
-      
+
       # Install doctl
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
