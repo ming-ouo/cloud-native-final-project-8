@@ -21,15 +21,17 @@ app.use('', router);
 
 class FactorManager { 
   constructor() { 
-    this.facto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rType = null;
+    this.factorType = null;
   }
 
   set setType(params) {
     this.factorType = params;
+    this.factorType._factor = {
+        factor: Math.random().toFixed(2)
+    };
   }
 
-  getParams() { 
-
+  getParams() {
     return this.factorType._factor;
   };
 }
@@ -45,21 +47,18 @@ class FactorType {
 
 // API: post api's endpoint
 // FACTOR_TYPE: change the factor here to adjust the post param
-function getfactor() {
-  return Math.random().toFixed(2);
-}
 const factorSeries = [
   {
     API: "moisture",
     FACTOR_TYPE: {
-      factor: getfactor()
+      factor: Math.random().toFixed(2)
     },
     PROMETHEUS_PARAM: (param) => global.moisture_factor_metric.set(param)
   },
   {
     API: "thickness",
     FACTOR_TYPE: {
-      factor: getfactor()
+      factor: Math.random().toFixed(2)
     },
     PROMETHEUS_PARAM: (param) => global.thickness_factor_metric.set(param)
   }
