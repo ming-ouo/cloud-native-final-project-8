@@ -132,3 +132,4 @@ dist
 # secret
 infra/db/mongodb-secrets.yaml
 
+k8s-1-22-8-do-1-sgp1-1654240572373-kubeconfig.yaml
